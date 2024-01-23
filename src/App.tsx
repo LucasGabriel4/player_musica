@@ -41,8 +41,8 @@ function App() {
    const barraDeProgresso = useRef<HTMLProgressElement>(null)
    const [tocando, setTocando] = useState(false)
    const [index, setIndex] = useState(0)
-   const [tempoAtual, setTempoAtual] = useState<number | undefined>()
-   const [duracao, setDuracao] = useState<number | undefined>()
+   const [tempoAtual, setTempoAtual] = useState<number>()
+   const [duracao, setDuracao] = useState<number>()
 
    const [musicas, setMusicas] = useState([
      {
@@ -115,21 +115,14 @@ function App() {
       if(tocando){
         audio.current?.play()
       }
-
-      const timer = setTimeout(() => {
-            setDuracao(audio.current?.duration)
-      }, 150)
+       
+    }, [index,tocando])
 
 
-      return () => {
-        clearTimeout(timer)
-      }
-     
-    }, [index])
-
-
-    const atualizarTempoAtual = () => {
+    const atualizarTempoAtual:React.ReactEventHandler<HTMLAudioElement> = (event) => {
       setTempoAtual(audio.current?.currentTime)
+      setDuracao(audio.current?.duration)
+     
     }
 
     const AvancarMusicaManualmente: React.MouseEventHandler<HTMLProgressElement> = (event) => {
